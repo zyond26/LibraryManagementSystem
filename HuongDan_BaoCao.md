@@ -1,132 +1,217 @@
-# BÁO CÁO ĐỒ ÁN MÔN HỌC: LẬP TRÌNH HƯỚNG ĐỐI TƯỢNG (JAVA)
-## ĐỀ TÀI: HỆ THỐNG QUẢN LÝ THƯ VIỆN SÁCH (LIBRARY MANAGEMENT SYSTEM)
+HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG CHƯƠNG TRÌNH
+ĐỀ TÀI: HỆ THỐNG QUẢN LÝ THƯ VIỆN SÁCH
+Sinh viên thực hiện
+	1.
+	2.
+	3.
+	4.
+	5.
+1. GIỚI THIỆU CHƯƠNG TRÌNH
+Chương trình Hệ thống Quản lý Thư viện Sách được xây dựng bằng ngôn ngữ Java nhằm hỗ trợ quản lý các hoạt động cơ bản của thư viện như quản lý thể loại sách, quản lý sách, quản lý độc giả và thực hiện các giao dịch mượn – trả sách.
+Phần mềm được phát triển dưới dạng ứng dụng Desktop sử dụng Java Swing để xây dựng giao diện người dùng và SQLite để lưu trữ dữ liệu. Nhờ sử dụng SQLite, chương trình có thể hoạt động độc lập mà không cần cài đặt các hệ quản trị cơ sở dữ liệu phức tạp như MySQL hay SQL Server.
+Đề tài được thực hiện nhằm vận dụng các kiến thức của môn Lập trình Hướng đối tượng, đồng thời giúp sinh viên làm quen với quy trình xây dựng một ứng dụng quản lý hoàn chỉnh từ khâu thiết kế dữ liệu, xử lý nghiệp vụ đến xây dựng giao diện người dùng.
 
-*(Hướng dẫn: Bạn có thể copy toàn bộ nội dung file Markdown này và paste trực tiếp vào Microsoft Word để tạo file báo cáo chính thức).*
+2. CÔNG NGHỆ SỬ DỤNG
+Công nghệ	Mục đích sử dụng
+Java 21	Ngôn ngữ lập trình
+Java Swing	Xây dựng giao diện Desktop
+SQLite	Lưu trữ dữ liệu
+JDBC	Kết nối java với SQLite
+Maven	Quản lý thư viện và build project
+VsCode	Môi trường phát triển
 
----
+3. CHỨC NĂNG CHÍNH CỦA HỆ THỐNG
+3.1. Quản lý thể loại sách
+Cho phép người dùng:
+•	Thêm thể loại mới. 
+•	Cập nhật tên thể loại. 
+•	Xóa thể loại. 
+•	Hiển thị danh sách thể loại. 
+Hệ thống không cho phép xóa thể loại nếu vẫn còn sách thuộc thể loại đó nhằm đảm bảo tính toàn vẹn dữ liệu.
+3.2. Quản lý sách
+Cho phép:
+•	Thêm sách mới. 
+•	Cập nhật thông tin sách. 
+•	Xóa sách. 
+•	Hiển thị danh sách sách. 
+Thông tin sách bao gồm:
+•	Tên sách. 
+•	Tác giả. 
+•	Nhà xuất bản. 
+•	Giá sách. 
+•	Số lượng tồn kho. 
+•	Thể loại sách. 
 
-## 1. GIỚI THIỆU ĐỀ TÀI
+3.3. Quản lý độc giả
+Cho phép:
+•	Thêm độc giả. 
+•	Chỉnh sửa thông tin độc giả. 
+•	Xóa độc giả. 
+•	Hiển thị danh sách độc giả. 
+Thông tin độc giả bao gồm:
+•	Họ và tên. 
+•	Số điện thoại. 
+•	Email. 
+3.4. Mượn sách
+Người dùng chọn độc giả và cuốn sách cần mượn.
+Hệ thống kiểm tra số lượng tồn kho:
+•	Nếu số lượng lớn hơn 0 thì cho phép mượn. 
+•	Nếu số lượng bằng 0 thì từ chối giao dịch. 
+Khi mượn thành công:
+•	Tạo phiếu mượn. 
+•	Ghi nhận ngày mượn. 
+•	Cập nhật trạng thái BORROWED. 
+•	Giảm số lượng sách trong kho. 
+3.5. Trả sách
+Người dùng chọn phiếu mượn đang ở trạng thái BORROWED.
+Khi trả sách:
+•	Cập nhật trạng thái RETURNED. 
+•	Ghi nhận ngày trả. 
+•	Tăng lại số lượng sách trong kho. 
+3.6. Tìm kiếm sách
+Hỗ trợ tìm kiếm theo:
+•	Tên sách. 
+•	Tác giả. 
+Người dùng có thể nhập từ khóa để tra cứu nhanh dữ liệu.
 
-Quản lý thư viện là một bài toán thực tế phổ biến tại tất cả các trường học, viện nghiên cứu, và thư viện công cộng. Việc quản lý thủ công bằng sổ sách thường gặp rất nhiều khó khăn như dễ thất lạc thông tin, tra cứu chậm chạp, và khó thống kê chính xác số lượng sách mượn trả hay số lượng sách còn lại trong kho.
+4. CẤU TRÚC MÃ NGUỒN
+Dự án được tổ chức theo mô hình phân lớp nhằm giúp mã nguồn dễ đọc, dễ bảo trì và dễ mở rộng.
+Package model
+Chứa các lớp dữ liệu:
+•	Category 
+•	Book 
+•	Reader 
+•	Borrow 
+Các lớp này dùng để biểu diễn dữ liệu của hệ thống.
 
-Nhằm giải quyết những hạn chế đó, đề tài **"Hệ thống quản lý thư viện sách"** được xây dựng trên ngôn ngữ lập trình Java với các công nghệ lõi như Java Swing cho giao diện người dùng và cơ sở dữ liệu nhúng SQLite kết hợp thư viện JDBC. Đây là ứng dụng dạng Desktop đơn giản, gọn nhẹ nhưng vẫn đáp ứng đầy đủ quy trình nghiệp vụ cơ bản của một thư viện thực tế.
+Package dao
+Chứa các lớp thao tác với cơ sở dữ liệu:
+•	CategoryDAO 
+•	BookDAO 
+•	ReaderDAO 
+•	BorrowDAO 
+Nhiệm vụ chính là thực hiện các câu lệnh SQL như:
+•	SELECT 
+•	INSERT 
+•	UPDATE 
+•	DELETE 
 
----
+Package service
+Chứa các lớp xử lý nghiệp vụ:
+•	CategoryService 
+•	BookService 
+•	ReaderService 
+•	BorrowService 
+Đây là tầng trung gian giữa giao diện và cơ sở dữ liệu.
 
-## 2. MỤC TIÊU ĐỀ TÀI
+Package database
+Bao gồm:
+•	DBConnection 
+•	DatabaseInitializer 
+Có nhiệm vụ:
+•	Tạo kết nối SQLite. 
+•	Tạo bảng dữ liệu. 
+•	Khởi tạo dữ liệu mẫu. 
 
-* **Về mặt lý thuyết**: Áp dụng thành thạo các kiến thức nền tảng của môn Lập trình hướng đối tượng (OOP) như:
-  * Cách xây dựng Lớp (Class), Đối tượng (Object) và hàm tạo (Constructor).
-  * Thực thi tính Đóng gói (Encapsulation) thông qua các thuộc tính private và các phương thức getter/setter.
-  * Phân chia mô hình ứng dụng theo các tầng rõ rệt: Model (mô hình dữ liệu), DAO (tương tác CSDL), Service (xử lý nghiệp vụ logic), và UI (giao diện Swing).
-* **Về mặt thực tiễn**: Xây dựng thành công một phần mềm Desktop có giao diện thân thiện, dễ sử dụng, có tính thực tế cao, giúp nhân viên thư viện thực hiện nhanh chóng các tác vụ hàng ngày.
+Package ui
+Chứa giao diện chương trình:
+•	MainFrame 
+•	CategoryPanel 
+•	BookPanel 
+•	ReaderPanel 
+•	BorrowPanel 
+•	SearchPanel 
 
----
+Main.java
+Là điểm bắt đầu của chương trình.
+Khi chạy Main.java, toàn bộ hệ thống sẽ được khởi tạo.
 
-## 3. CẤU TRÚC CHƯƠNG TRÌNH
+5. HƯỚNG DẪN CHẠY CHƯƠNG TRÌNH
+Cách 1: Chạy bằng Vscode hoặc bất kì IDE nào
+Bước 1: Mở IntelliJ IDEA.
+Bước 2: Chọn Open Project.
+Bước 3: Mở thư mục source code.
+Bước 4: Đợi Maven tải thư viện.
+Bước 5: Mở lớp Main.java.
+Bước 6: Nhấn Run.
+Cách 2: Chạy bằng Terminal
+Mở Terminal tại thư mục chứa file pom.xml.
 
-Dự án được quản lý bằng công cụ Maven để tự động tải các thư viện cần thiết (SQLite JDBC driver). Mã nguồn được chia thành các package chuyên biệt để dễ bảo trì và phát triển:
+Biên dịch chương trình: ‘bash’
+mvn clean compile
+Khởi chạy chương trình: ‘bash’
+mvn exec:java
 
-1. **`com.library.model`**: Chứa các lớp biểu diễn thực thể như `Book`, `Reader`, `Category`, `Borrow`.
-2. **`com.library.database`**: Quản lý kết nối (`DBConnection`) và tự động khởi tạo cơ sở dữ liệu mẫu (`DatabaseInitializer`).
-3. **`com.library.dao`**: Chứa các lớp Data Access Object (`BookDAO`, `ReaderDAO`, `CategoryDAO`, `BorrowDAO`) chịu trách nhiệm thực thi các truy vấn SQL trực tiếp lên cơ sở dữ liệu SQLite.
-4. **`com.library.service`**: Chứa các lớp xử lý logic trung gian (`BookService`, `ReaderService`, `CategoryService`, `BorrowService`), kiểm tra tính hợp lệ của dữ liệu trước khi chuyển giao giữa UI và DAO.
-5. **`com.library.ui`**: Chứa giao diện Swing (`MainFrame` và các panel con `BookPanel`, `ReaderPanel`, `CategoryPanel`, `BorrowPanel`, `SearchPanel`).
-6. **`com.library.Main`**: Lớp chứa hàm `main` khởi chạy toàn bộ ứng dụng.
 
----
+6. CƠ CHẾ KHỞI TẠO DỮ LIỆU
+Khi chương trình được chạy lần đầu:
+•	Tự động tạo file library.db. 
+•	Tự động tạo các bảng dữ liệu. 
+•	Tự động sinh dữ liệu mẫu. 
+Người dùng không cần thao tác SQL thủ công.
+7. MỘT SỐ LƯU Ý KHI CHẤM BÀI
+1.	Không được xóa file pom.xml. 
+2.	Máy tính cần cài đặt Java 21 trở lên. 
+3.	Maven cần kết nối Internet ở lần chạy đầu tiên để tải thư viện. 
+4.	Không cần cài đặt MySQL hoặc SQL Server. 
+5.	Dữ liệu được lưu trong file: 
+library.db
+6.	Nếu muốn tạo dữ liệu mới: 
+Xóa file:
+library.db
+và chạy lại chương trình.
+7.	Nếu Maven báo lỗi thư viện:  mvn clean install
+hoặc Reload Maven Project trong IntelliJ IDEA.
+8.	Chương trình đã được kiểm thử trên: 
+•	Windows 11 
+•	JDK 21 
+•	Maven 3.9.16
 
-## 4. THIẾT KẾ CƠ SỞ DỮ LIỆU (DATABASE DESIGN)
 
-Hệ thống sử dụng cơ sở dữ liệu SQLite nhẹ, nhúng trực tiếp vào dự án dưới dạng tệp tin `library.db`. Dưới đây là lược đồ thiết kế các bảng:
+8. KẾT LUẬN
+Chương trình Hệ thống Quản lý Thư viện Sách đã hoàn thành các chức năng cơ bản của một hệ thống quản lý thư viện gồm quản lý thể loại, quản lý sách, quản lý độc giả, mượn sách, trả sách và tìm kiếm dữ liệu.
+Thông qua quá trình thực hiện đề tài, sinh viên đã vận dụng được các kiến thức về lập trình hướng đối tượng, Java Swing, JDBC, SQLite và Maven để xây dựng một ứng dụng quản lý hoàn chỉnh. Chương trình có thể triển khai trên các máy tính khác nhau với yêu cầu cài đặt đơn giản và không cần sử dụng hệ quản trị cơ sở dữ liệu bên ngoài.
 
-### 4.1. Bảng Thể loại (`category`)
-* `id`: `INTEGER PRIMARY KEY AUTOINCREMENT` - Mã thể loại (tự động tăng).
-* `name`: `TEXT NOT NULL UNIQUE` - Tên thể loại sách.
+*Nếu chưa có java và maven thì xem hướng dẫn sau : 
+1. HƯỚNG DẪN CÀI ĐẶT JAVA
+Bước 1: Tải Java
+Tải JDK 21 tại:
+•	Oracle JDK: https://www.oracle.com/java/technologies/downloads/ 
+ 
+Khuyến nghị sử dụng JDK 21.
+Bước 2: Cài đặt
+Chạy file cài đặt và thực hiện theo các bước mặc định.
+Ví dụ đường dẫn:
+C:\Program Files\Java\jdk-21
 
-### 4.2. Bảng Sách (`book`)
-* `id`: `INTEGER PRIMARY KEY AUTOINCREMENT` - Mã sách.
-* `title`: `TEXT NOT NULL` - Tên cuốn sách.
-* `author`: `TEXT NOT NULL` - Tác giả cuốn sách.
-* `publisher`: `TEXT` - Nhà xuất bản.
-* `price`: `REAL` - Đơn giá của sách.
-* `quantity`: `INTEGER` - Số lượng sách hiện còn lại trong kho.
-* `category_id`: `INTEGER` - Mã thể loại (Khóa ngoại tham chiếu đến bảng `category`).
+Bước 3: Kiểm tra Java
+Mở Command Prompt:    java --version
+Nếu xuất hiện:
+ thì Java đã được cài đặt thành công.
+Kiểm tra trình biên dịch:
+javac -version
+Kết quả:   javac 21
+2. HƯỚNG DẪN CÀI ĐẶT MAVEN
+Bước 1: Tải Maven
+Truy cập:
+https://maven.apache.org/download.cgi
+ 
+Tải bản Binary Zip Archive.
+Bước 2: Giải nén
+Ví dụ:
+C:\Apache\Maven\apache-maven-3.9.16
 
-### 4.3. Bảng Độc giả (`reader`)
-* `id`: `INTEGER PRIMARY KEY AUTOINCREMENT` - Mã độc giả.
-* `full_name`: `TEXT NOT NULL` - Họ và tên độc giả.
-* `phone`: `TEXT` - Số điện thoại liên lạc.
-* `email`: `TEXT` - Địa chỉ email.
+Bước 3: Cấu hình biến môi trường
+Tạo biến:
+MAVEN_HOME
+Giá trị:
+C:\Apache\Maven\apache-maven-3.9.11
+Thêm vào Path:
+%MAVEN_HOME%\bin
 
-### 4.4. Bảng Mượn trả (`borrow`)
-* `id`: `INTEGER PRIMARY KEY AUTOINCREMENT` - Mã lượt mượn.
-* `reader_id`: `INTEGER` - Mã độc giả mượn sách (Khóa ngoại tham chiếu đến bảng `reader`).
-* `book_id`: `INTEGER` - Mã sách được mượn (Khóa ngoại tham chiếu đến bảng `book`).
-* `borrow_date`: `TEXT NOT NULL` - Ngày mượn sách (Định dạng YYYY-MM-DD).
-* `return_date`: `TEXT` - Ngày trả sách (Định dạng YYYY-MM-DD, giá trị `NULL` nếu chưa trả).
-* `status`: `TEXT NOT NULL` - Trạng thái mượn sách (`BORROWED` - Đang mượn, `RETURNED` - Đã trả).
 
----
+Bước 4: Kiểm tra Maven
+Mở Command Prompt:     mvn --version
+Nếu xuất hiện:
+ thì Maven đã được cài đặt thành công.
 
-## 5. CÁC CHỨC NĂNG CHÍNH CỦA CHƯƠNG TRÌNH
-
-### 5.1. Quản lý Thể loại sách
-* Xem danh sách các thể loại sách hiện có trên bảng.
-* Thêm mới thể loại.
-* Chỉnh sửa tên thể loại khi chọn một dòng trên bảng.
-* Xóa thể loại (Không cho phép xóa nếu có sách thuộc thể loại này để đảm bảo tính toàn vẹn dữ liệu).
-
-### 5.2. Quản lý Sách
-* Hiển thị danh sách toàn bộ sách cùng thông tin thể loại.
-* Thêm cuốn sách mới (Chọn thể loại thông qua ComboBox).
-* Cập nhật thông tin chi tiết của sách (tên, tác giả, nhà xuất bản, giá bán, số lượng).
-* Xóa sách khỏi hệ thống với hộp thoại xác nhận.
-
-### 5.3. Quản lý Độc giả
-* Quản lý danh sách độc giả của thư viện.
-* Thêm độc giả mới, cập nhật số điện thoại và email.
-* Xóa độc giả có xác nhận của quản trị viên.
-
-### 5.4. Nghiệp vụ Mượn - Trả sách
-* **Mượn sách**: Cho phép chọn Độc giả từ danh sách và chọn Sách muốn mượn.
-  * *Quy tắc nghiệp vụ*: Hệ thống kiểm tra số lượng sách còn lại trong kho (`quantity`). Nếu số lượng > 0, hệ thống chấp nhận cho mượn, ghi nhận ngày mượn, đặt trạng thái là `BORROWED`, và tự động giảm số lượng sách trong kho đi 1. Nếu số lượng = 0, ứng dụng báo lỗi và từ chối mượn.
-* **Trả sách**: Chọn một lượt mượn đang có trạng thái "Đang mượn" trên bảng và nhấn nút "Trả sách". Hệ thống cập nhật trạng thái phiếu mượn thành `RETURNED`, ghi nhận ngày trả là ngày hiện tại, đồng thời cộng trả lại 1 đơn vị vào số lượng cuốn sách đó trong kho.
-
-### 5.5. Tìm kiếm & Lọc sách
-* Tìm kiếm sách nhanh chóng bằng cách nhập từ khóa (hệ thống sẽ so khớp theo tên sách hoặc tên tác giả).
-* Lọc danh sách sách theo từng thể loại cụ thể từ trình thả xuống (ComboBox).
-
----
-
-## 6. HƯỚNG DẪN CHẠY CHƯƠNG TRÌNH
-
-### 6.1. Chuẩn bị môi trường
-* Đảm bảo máy tính đã cài đặt **JDK 21** và **Maven**.
-* Tải về và giải nén thư mục dự án `Java_OOP`.
-
-### 6.2. Các lệnh thực thi
-Mở terminal hoặc PowerShell tại thư mục gốc của dự án và chạy các lệnh:
-1. **Biên dịch mã nguồn**:
-   ```bash
-   mvn clean compile
-   ```
-2. **Khởi chạy ứng dụng**:
-   ```bash
-   mvn exec:java
-   ```
-
-### 6.3. Hoạt động của ứng dụng trong lần đầu chạy
-* Hệ thống sẽ tự động phát hiện nếu file cơ sở dữ liệu `library.db` chưa tồn tại để tự tạo lập.
-* Đồng thời các bảng sẽ được khởi tạo qua các câu lệnh `CREATE TABLE IF NOT EXISTS`.
-* Một bộ dữ liệu mẫu (các cuốn sách, thể loại, độc giả, lịch sử mượn mẫu) được nạp trực tiếp để người dùng kiểm thử giao diện ngay lập tức mà không gặp bất kỳ lỗi kết nối nào.
-
----
-
-## 7. KẾT LUẬN
-
-Đồ án **"Hệ thống quản lý thư viện sách"** đã hoàn thành đầy đủ tất cả các mục tiêu đề ra:
-* Đáp ứng đầy đủ các yêu cầu nghiệp vụ quản lý sách, độc giả, thể loại và vòng đời mượn trả sách.
-* Cấu trúc mã nguồn chuẩn hướng đối tượng Java OOP, sạch sẽ, tách bạch vai trò giữa các lớp.
-* Giao diện Swing được thiết kế theo phong cách hiện đại với các gam màu sắc phối hợp nhã nhặn, mang lại trải nghiệm sử dụng tốt.
-* Hệ thống cơ sở dữ liệu thông minh tự khởi tạo giúp tối giản hóa quá trình triển khai ứng dụng trên máy của giáo viên hoặc hội đồng chấm điểm đồ án.
