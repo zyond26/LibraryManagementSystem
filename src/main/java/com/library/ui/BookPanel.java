@@ -20,7 +20,7 @@ public class BookPanel extends JPanel {
 
     private JTable table;
     private DefaultTableModel tableModel;
-    
+
     private JTextField txtId;
     private JTextField txtTitle;
     private JTextField txtAuthor;
@@ -55,8 +55,8 @@ public class BookPanel extends JPanel {
 
         // Bảng dữ liệu (Bên trái)
         tableModel = new DefaultTableModel(
-                new Object[]{"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Đơn giá", "Số lượng", "Thể loại"}, 0
-        ) {
+                new Object[] { "Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Đơn giá", "Số lượng", "Thể loại" },
+                0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -86,8 +86,7 @@ public class BookPanel extends JPanel {
         pnlForm.setLayout(new BoxLayout(pnlForm, BoxLayout.Y_AXIS));
         pnlForm.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Thông tin cuốn sách",
-                0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(44, 62, 80)
-        ));
+                0, 0, new Font("Segoe UI", Font.BOLD, 14), new Color(44, 62, 80)));
         pnlForm.setPreferredSize(new Dimension(350, 0));
         pnlForm.setBackground(Color.WHITE);
 
@@ -120,18 +119,27 @@ public class BookPanel extends JPanel {
         cbCategory.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         // Set font
-        JLabel[] labels = {lblId, lblBookTitle, lblAuthor, lblPublisher, lblPrice, lblQuantity, lblCategory};
-        JTextField[] fields = {txtId, txtTitle, txtAuthor, txtPublisher, txtPrice, txtQuantity};
-        for (JLabel lbl : labels) lbl.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        for (JTextField tf : fields) tf.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        JLabel[] labels = { lblId, lblBookTitle, lblAuthor, lblPublisher, lblPrice, lblQuantity, lblCategory };
+        JTextField[] fields = { txtId, txtTitle, txtAuthor, txtPublisher, txtPrice, txtQuantity };
+        for (JLabel lbl : labels)
+            lbl.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        for (JTextField tf : fields)
+            tf.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        pnlFields.add(lblId); pnlFields.add(txtId);
-        pnlFields.add(lblBookTitle); pnlFields.add(txtTitle);
-        pnlFields.add(lblAuthor); pnlFields.add(txtAuthor);
-        pnlFields.add(lblPublisher); pnlFields.add(txtPublisher);
-        pnlFields.add(lblPrice); pnlFields.add(txtPrice);
-        pnlFields.add(lblQuantity); pnlFields.add(txtQuantity);
-        pnlFields.add(lblCategory); pnlFields.add(cbCategory);
+        pnlFields.add(lblId);
+        pnlFields.add(txtId);
+        pnlFields.add(lblBookTitle);
+        pnlFields.add(txtTitle);
+        pnlFields.add(lblAuthor);
+        pnlFields.add(txtAuthor);
+        pnlFields.add(lblPublisher);
+        pnlFields.add(txtPublisher);
+        pnlFields.add(lblPrice);
+        pnlFields.add(txtPrice);
+        pnlFields.add(lblQuantity);
+        pnlFields.add(txtQuantity);
+        pnlFields.add(lblCategory);
+        pnlFields.add(cbCategory);
 
         pnlForm.add(pnlFields);
 
@@ -189,12 +197,12 @@ public class BookPanel extends JPanel {
         tableModel.setRowCount(0);
         List<Book> books = bookService.getAllBooks();
         for (Book b : books) {
-            tableModel.addRow(new Object[]{
+            tableModel.addRow(new Object[] {
                     b.getId(),
                     b.getTitle(),
                     b.getAuthor(),
                     b.getPublisher(),
-                    b.getPrice(),
+                    formatPrice(b.getPrice()),
                     b.getQuantity(),
                     b.getCategoryName()
             });
@@ -220,12 +228,13 @@ public class BookPanel extends JPanel {
     }
 
     private void addBook() {
-        if (!validateForm()) return;
+        if (!validateForm())
+            return;
 
         String title = txtTitle.getText().trim();
         String author = txtAuthor.getText().trim();
         String publisher = txtPublisher.getText().trim();
-        double price = Double.parseDouble(txtPrice.getText().trim());
+        double price = parsePrice(txtPrice.getText());
         int quantity = Integer.parseInt(txtQuantity.getText().trim());
         Category category = (Category) cbCategory.getSelectedItem();
 
@@ -245,14 +254,16 @@ public class BookPanel extends JPanel {
     }
 
     private void editBook() {
-        if (txtId.getText().isEmpty()) return;
-        if (!validateForm()) return;
+        if (txtId.getText().isEmpty())
+            return;
+        if (!validateForm())
+            return;
 
         int id = Integer.parseInt(txtId.getText());
         String title = txtTitle.getText().trim();
         String author = txtAuthor.getText().trim();
         String publisher = txtPublisher.getText().trim();
-        double price = Double.parseDouble(txtPrice.getText().trim());
+        double price = parsePrice(txtPrice.getText());
         int quantity = Integer.parseInt(txtQuantity.getText().trim());
         Category category = (Category) cbCategory.getSelectedItem();
 
@@ -263,7 +274,8 @@ public class BookPanel extends JPanel {
 
         Book book = new Book(id, title, author, publisher, price, quantity, category.getId());
         if (bookService.updateBook(book)) {
-            JOptionPane.showMessageDialog(this, "Cập nhật sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Cập nhật sách thành công!", "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE);
             loadBooks();
             clearForm();
         } else {
@@ -272,7 +284,8 @@ public class BookPanel extends JPanel {
     }
 
     private void deleteBook() {
-        if (txtId.getText().isEmpty()) return;
+        if (txtId.getText().isEmpty())
+            return;
 
         int id = Integer.parseInt(txtId.getText());
         int option = JOptionPane.showConfirmDialog(
@@ -280,29 +293,33 @@ public class BookPanel extends JPanel {
                 "Bạn có chắc chắn muốn xóa cuốn sách này?\nLưu ý: Nếu sách này từng được mượn, thao tác xóa có thể bị lỗi liên kết dữ liệu.",
                 "Xác nhận xóa sách",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
+                JOptionPane.WARNING_MESSAGE);
 
         if (option == JOptionPane.YES_OPTION) {
             if (bookService.deleteBook(id)) {
-                JOptionPane.showMessageDialog(this, "Xóa sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa sách thành công!", "Thông báo",
+                        JOptionPane.INFORMATION_MESSAGE);
                 loadBooks();
                 clearForm();
             } else {
-                JOptionPane.showMessageDialog(this, "Không thể xóa sách này. Có thể sách đang nằm trong phiếu mượn trả!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Không thể xóa sách này. Có thể sách đang nằm trong phiếu mượn trả!", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
     private boolean validateForm() {
         if (txtTitle.getText().trim().isEmpty() || txtAuthor.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tên sách và Tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tên sách và Tác giả không được để trống!", "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         }
         try {
-            double price = Double.parseDouble(txtPrice.getText().trim());
+            double price = parsePrice(txtPrice.getText());
             if (price < 0) {
-                JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn hoặc bằng 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn hoặc bằng 0!", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -313,7 +330,8 @@ public class BookPanel extends JPanel {
         try {
             int quantity = Integer.parseInt(txtQuantity.getText().trim());
             if (quantity < 0) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn hoặc bằng 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn hoặc bằng 0!", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -331,9 +349,28 @@ public class BookPanel extends JPanel {
         txtPublisher.setText("");
         txtPrice.setText("");
         txtQuantity.setText("");
-        if (cbCategory.getItemCount() > 0) cbCategory.setSelectedIndex(0);
+        if (cbCategory.getItemCount() > 0)
+            cbCategory.setSelectedIndex(0);
         table.clearSelection();
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+    }
+
+    private double parsePrice(String text) throws NumberFormatException {
+        // Loại bỏ các ký tự không phải số (như dấu chấm, dấu phẩy, chữ VNĐ, khoảng
+        // trắng, ngoặc đơn)
+        String cleanText = text.replaceAll("[^0-9]", "");
+        if (cleanText.isEmpty()) {
+            throw new NumberFormatException("Đơn giá không hợp lệ");
+        }
+        return Double.parseDouble(cleanText);
+    }
+
+    private String formatPrice(double price) {
+        java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
+        java.text.DecimalFormatSymbols symbols = new java.text.DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter.format(price) + " (VNĐ)";
     }
 }

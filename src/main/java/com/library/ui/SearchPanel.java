@@ -142,7 +142,7 @@ public class SearchPanel extends JPanel {
                     b.getTitle(),
                     b.getAuthor(),
                     b.getPublisher(),
-                    b.getPrice(),
+                    formatPrice(b.getPrice()),
                     b.getQuantity(),
                     b.getCategoryName()
             });
@@ -168,5 +168,13 @@ public class SearchPanel extends JPanel {
             List<Book> result = bookService.filterBooksByCategory(categoryId);
             displayBooks(result);
         }
+    }
+
+    private String formatPrice(double price) {
+        java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
+        java.text.DecimalFormatSymbols symbols = new java.text.DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter.format(price) + " (VNĐ)";
     }
 }
