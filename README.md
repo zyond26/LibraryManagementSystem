@@ -2,8 +2,6 @@
 
 Đây là một dự án Java Desktop bằng Java Swing kết hợp cơ sở dữ liệu SQLite và JDBC, được xây dựng theo mô hình chuẩn Maven. Dự án phù hợp làm đồ án môn học Lập trình hướng đối tượng (OOP) cho sinh viên đại học với mã nguồn đơn giản, sạch sẽ, có cấu trúc rõ ràng và được chú thích chi tiết.
 
----
-
 ## Tính năng chính
 
 1. **Quản lý Sách**: Thêm, sửa, xóa, xem danh sách sách trong thư viện.
@@ -13,15 +11,12 @@
 5. **Tìm kiếm & Lọc**: Tìm sách theo tên/tác giả, lọc sách theo thể loại.
 6. **Tự động khởi tạo Database**: Tự động tạo cơ sở dữ liệu SQLite (`library.db`) và nạp dữ liệu mẫu khi ứng dụng chạy lần đầu tiên.
 
----
-
 ## Yêu cầu hệ thống
 
 * **Hệ điều hành**: Windows, macOS hoặc Linux.
 * **Java Development Kit (JDK)**: Phiên bản 21 trở lên.
 * **Apache Maven**: Phiên bản 3.8 trở lên.
 
----
 
 ## Hướng dẫn cài đặt và chạy ứng dụng
 
@@ -39,11 +34,10 @@ Sử dụng plugin Maven Exec để khởi chạy ứng dụng nhanh chóng:
 ```bash
 mvn exec:java
 ```
-Hoặc bạn có thể mở dự án trong các IDE như IntelliJ IDEA, Eclipse, NetBeans và chạy trực tiếp class `com.library.Main`.
+Hoặc bạn có thể mở dự án trong các IDE như vscode, IntelliJ IDEA, Eclipse, NetBeans và chạy trực tiếp class `com.library.Main`.
 
 > **Lưu ý:** Trong lần đầu tiên khởi chạy, chương trình sẽ tự động tạo một file cơ sở dữ liệu tên là `library.db` ở thư mục gốc của dự án và chèn dữ liệu mẫu vào đó. Bạn không cần bất kỳ cài đặt cơ sở dữ liệu thủ công nào.
 
----
 
 ## Cấu trúc thư mục dự án
 
